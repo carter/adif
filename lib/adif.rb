@@ -25,6 +25,8 @@ class ADIF
 			when s.scan(/[^<]*<eor>[^<]*/i)
 				records << current
 				current = Record.new
+      when s.scan(/[^<]*<APP_LoTW_EOF>[^>]*/i)
+        # Do nothing
 			else
 				raise "unexpected string: #{s.string[s.pos..-1]}"
 			end

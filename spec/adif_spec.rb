@@ -157,6 +157,47 @@ describe ADIF do
 			expect(record.datetime_off).to be_instance_of(DateTime)
 			expect(record.datetime_off.strftime('%Y-%m-%d %H:%M:%S')).to eq "1997-01-01 00:00:05"
 		end
+
+    it 'can handle non-standard APP_LoTW_EOF as found in LoTW adif export' do
+      adif = ADIF.parse_adi(<<-EOS)
+      ARRL Logbook of the World Status Report
+      Generated at 2017-01-13 14:27:41
+      for ns7i
+      Query:
+
+      <PROGRAMID:4>LoTW
+      <APP_LoTW_LASTQSORX:19>2016-11-11 20:16:07
+
+      <APP_LoTW_NUMREC:3>794
+
+      <eoh>
+
+      <APP_LoTW_OWNCALL:4>NS7I
+      <STATION_CALLSIGN:4>NS7I
+      <MY_DXCC:3>291
+      <MY_COUNTRY:24>UNITED STATES OF AMERICA
+      <APP_LoTW_MY_DXCC_ENTITY_STATUS:7>Current
+      <MY_CQ_ZONE:1>4
+      <MY_ITU_ZONE:1>7
+      <MY_GRIDSQUARE:6>DN71EH
+      <MY_STATE:2>WY
+      <MY_CNTY:9>WY,ALBANY
+      <CALL:6>KK6TKQ
+      <BAND:3>20M
+      <FREQ:8>14.28000
+      <MODE:3>SSB
+      <APP_LoTW_MODEGROUP:5>PHONE
+      <QSO_DATE:8>20150716
+      <TIME_ON:6>030800
+      <QSL_RCVD:1>N
+      <eor>
+
+      <APP_LoTW_EOF>
+      EOS
+      
+      expect(adif.records.size).to eq(1)
+
+    end
 	end
 
 	context "ADX" do
